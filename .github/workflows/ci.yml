@@ -9,7 +9,8 @@ on:
       - main
 
 jobs:
-  # ── NIST RA-5: Vulnerability Scanning ──────────────
+
+  # NIST RA-5: Vulnerability Scanning
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
@@ -25,12 +26,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Scan dependencies (RA-5)
+      - name: Scan dependencies RA-5
         run: |
           pip install safety
           safety check --continue-on-error
 
-  # ── Tests ───────────────────────────────────────────
+  # NIST SI-7: Software Integrity via automated tests
   test:
     name: Run Tests
     runs-on: ubuntu-latest
@@ -63,7 +64,7 @@ jobs:
           npm install
           npm run build
 
-      - name: Run tests (SI-7)
+      - name: Run tests SI-7
         run: pytest -v
         env:
           DJANGO_SECRET_KEY: test-secret-key-for-ci-only
@@ -71,8 +72,7 @@ jobs:
           DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
           DATABASE_URL: sqlite:///test.db
 
-  # ── Build and Push (main only) ──────────────────────
-  # AU-2/AU-3: Every image tagged with SHA for audit trail
+  # NIST AU-2 AU-3: Audit trail via image SHA tagging
   build-and-push:
     name: Build and Push Image
     runs-on: ubuntu-latest
@@ -93,7 +93,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push (AU-2: image tagged with SHA)
+      - name: Build and Push AU-2 image tagged with SHA
         uses: docker/build-push-action@v5
         with:
           context: .
