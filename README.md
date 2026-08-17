@@ -79,3 +79,4 @@ cp .env.example .env
 - Security headers configured (XSS, CSRF, clickjacking protection)
 - Database-backed sessions (survives container restarts)
 - Dependency vulnerability scanning in CI
+# Demo: This PR requires peer review before merging
