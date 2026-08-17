@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# Database
+db.sqlite3
+
+# Environment secrets
+.env
+
+# Node
+node_modules/
+
+# Compiled assets
+static/js/
+staticfiles/
+
+# Sessions
+.sessions/
+
+# OS
+.DS_Store
