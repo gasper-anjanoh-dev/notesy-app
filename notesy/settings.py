@@ -9,7 +9,19 @@ SECRET_KEY = "django-insecure-replace-me-eventually-l0lz-h4xx-9000"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+
+def _split_env_list(varname: str, default: str = ""):
+    """Return a list of non-empty, stripped values from a comma-separated env var."""
+    return [s.strip() for s in os.environ.get(varname, default).split(",") if s.strip()]
+
+
+# Allow hosts and CSRF trusted origins configured from environment for production.
+# Example: set `DJANGO_ALLOWED_HOSTS=example.com,www.example.com` and
+# `CSRF_TRUSTED_ORIGINS=https://example.com,https://www.example.com`
+ALLOWED_HOSTS = _split_env_list("DJANGO_ALLOWED_HOSTS") or ["localhost"]
+
+# CSRF_TRUSTED_ORIGINS expects full origins (including scheme). Read from env.
+CSRF_TRUSTED_ORIGINS = _split_env_list("CSRF_TRUSTED_ORIGINS")
 
 
 INSTALLED_APPS = [
