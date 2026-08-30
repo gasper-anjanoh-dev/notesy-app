@@ -16,12 +16,17 @@ def _split_env_list(varname: str, default: str = ""):
 
 
 # Allow hosts and CSRF trusted origins configured from environment for production.
-# Example: set `DJANGO_ALLOWED_HOSTS=example.com,www.example.com` and
-# `CSRF_TRUSTED_ORIGINS=https://example.com,https://www.example.com`
-ALLOWED_HOSTS = _split_env_list("DJANGO_ALLOWED_HOSTS") or ["localhost"]
+# Read `CSRF_TRUSTED_ORIGINS` and `DJANGO_ALLOWED_HOSTS` from environment variables.
+# Defaults chosen for local development and standby environments.
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    'CSRF_TRUSTED_ORIGINS',
+    'http://localhost:8000'
+).split(',')
 
-# CSRF_TRUSTED_ORIGINS expects full origins (including scheme). Read from env.
-CSRF_TRUSTED_ORIGINS = _split_env_list("CSRF_TRUSTED_ORIGINS")
+ALLOWED_HOSTS = os.environ.get(
+    'DJANGO_ALLOWED_HOSTS',
+    'localhost,127.0.0.1'
+).split(',')
 
 
 INSTALLED_APPS = [
