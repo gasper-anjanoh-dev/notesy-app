@@ -99,9 +99,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure AWS Credentials OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::797855613035:role/notesy-github-actions-role
           aws-region: us-east-1
           audience: sts.amazonaws.com
 
