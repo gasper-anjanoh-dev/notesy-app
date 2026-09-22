@@ -11,6 +11,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
 
@@ -97,6 +98,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Configure AWS Credentials OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+          audience: sts.amazonaws.com
+
       - name: Build and Push AU-2 image tagged with SHA
         uses: docker/build-push-action@v5
         with:
@@ -107,3 +115,12 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Create feature flag in SSM (if not exists)
+        run: |
+          aws ssm put-parameter \
+            --name "/notesy/dev/features/dark-mode-banner" \
+            --value "false" \
+            --type "String" \
+            --description "Dark mode banner feature flag" \
+            2>/dev/null || echo "Parameter already exists - skipping"

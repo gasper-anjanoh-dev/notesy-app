@@ -1,6 +1,16 @@
 {% extends "notes/base.html" %}
 {% block title %}Your notes &middot; Notesy{% endblock %}
 {% block content %}
+  {% if show_dark_banner %}
+    <div style="background:#1a1a2e;color:#00d4ff;padding:12px;text-align:center;font-weight:bold;margin-bottom:1rem">
+      Dark Mode Banner &mdash; Feature Flag: ENABLED (Flag value: {{ flag_value }})
+    </div>
+  {% else %}
+    <div style="background:#f0f0f0;color:#666;padding:12px;text-align:center;margin-bottom:1rem">
+      Standard Mode &mdash; Feature Flag: DISABLED (Flag value: {{ flag_value }})
+    </div>
+  {% endif %}
+
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
     <h2>Your notes</h2>
     <button

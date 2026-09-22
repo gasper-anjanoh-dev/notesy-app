@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+from notesy.feature_flags import get_flag, is_enabled
+
 from .models import Note
 
 
@@ -30,7 +32,16 @@ def logout_view(request):
 @login_required
 def note_list(request):
     notes = Note.objects.filter(owner=request.user)
-    return render(request, "notes/list.html", {"notes": notes})
+    user_id = request.user.id if request.user.is_authenticated else 0
+    return render(
+        request,
+        "notes/list.html",
+        {
+            "notes": notes,
+            "show_dark_banner": is_enabled("dark-mode-banner", user_id),
+            "flag_value": get_flag("dark-mode-banner"),
+        },
+    )
 
 
 @login_required

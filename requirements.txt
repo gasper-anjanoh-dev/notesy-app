@@ -1,4 +1,5 @@
 django
+boto3
 gunicorn
 psycopg2-binary
 requests==2.20.0
